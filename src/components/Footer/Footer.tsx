@@ -6,12 +6,12 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer__inner">
         <div className="footer__top">
-          <a className="footer__logo" href="#hero">&lt;SS /&gt;</a>
+          <a className="footer__logo" href="#hero">&lt;SS/&gt;</a>
           <div className="footer__socials">
             <a href="https://github.com/shreyashshirsat" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <Github size={18} />
             </a>
-            <a href="https://linkedin.com/in/shreyashshirsat" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/shreyash-shirsat-728578281/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <Linkedin size={18} />
             </a>
             <a href="mailto:dev.shreyashshirsat@gmail.com" aria-label="Email">

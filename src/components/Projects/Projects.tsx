@@ -7,14 +7,14 @@ const projects = [
     description:
       'An automated cloud infrastructure that detects failures and recovers without manual intervention. Built with health checks, auto-scaling, and self-repair mechanisms.',
     stack: ['AWS', 'Docker', 'Kubernetes', 'MERN', 'ML'],
-    github: 'https://github.com/shreyashshirsat/self-healing-cloud',
+    github: 'https://github.com/VSwaroop07/SHC',
   },
   {
     title: 'Log-Parser',
     description:
       'A Python-based log analysis tool that processes system logs through the Linux terminal with automated execution using cron jobs, providing insights and alerts for system monitoring.',
     stack: ['Python', 'Linux', 'Cron'],
-    github: 'https://github.com/shreyashshirsat/strive',
+    github: 'https://github.com/shreyashshirsat/log-monitor',
     demo: '#',
   },
   {
@@ -22,7 +22,7 @@ const projects = [
     description:
       'A MERN-based ride booking application with real-time communication, secure authentication, and Google Maps integration for live ride management, showcasing full-stack development skills.',
     stack: ['React', 'Node.js', 'MongoDB', 'Google Maps API'],
-    github: 'https://github.com/shreyashshirsat/fornova',
+    github: 'https://github.com/shreyashshirsat/Uber-Clone',
   },
 ];
 

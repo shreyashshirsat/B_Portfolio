@@ -30,7 +30,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner">
         <a className="navbar__logo" href="#hero" onClick={() => handleClick('#hero')}>
-          &lt;SS /&gt;
+          &lt;SS/&gt;
         </a>
 
         <ul className={`navbar__links ${menuOpen ? 'navbar__links--open' : ''}`}>
