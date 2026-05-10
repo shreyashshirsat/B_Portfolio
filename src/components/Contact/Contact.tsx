@@ -52,7 +52,14 @@ export default function Contact() {
     setErrorMessage(null);
 
     try {
-      await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey);
+      const formData = new FormData(formRef.current);
+      const templateParams = {
+        from_name: formData.get('name') as string,
+        from_email: formData.get('email') as string,
+        message: formData.get('message') as string,
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
       setStatus('success');
       formRef.current.reset();
     } catch (error) {
@@ -104,11 +111,11 @@ export default function Contact() {
               <>
                 <div className="contact__field">
                   <label htmlFor="name">Name</label>
-                  <input id="name" name="from_name" type="text" placeholder="Your name" required />
+                  <input id="name" name="name" type="text" placeholder="Your name" required />
                 </div>
                 <div className="contact__field">
                   <label htmlFor="email">Email</label>
-                  <input id="email" name="reply_to" type="email" placeholder="you@example.com" required />
+                  <input id="email" name="email" type="email" placeholder="you@example.com" required />
                 </div>
                 <div className="contact__field">
                   <label htmlFor="message">Message</label>
