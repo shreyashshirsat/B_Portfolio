@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { Mail, Linkedin, Github, Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 const links = [
@@ -13,7 +14,7 @@ const links = [
     icon: <Linkedin size={20} />,
     label: 'LinkedIn',
     value: 'linkedin.com/in/shreyashshirsat',
-    href: 'https://linkedin.com/in/shreyashshirsat',
+    href: 'https://www.linkedin.com/in/shreyash-shirsat-728578281/',
   },
   {
     icon: <Github size={20} />,
@@ -24,11 +25,41 @@ const links = [
 ];
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    if (!formRef.current) {
+      return;
+    }
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setStatus('error');
+      setErrorMessage(
+        'Email service is not configured. Please add VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, and VITE_EMAILJS_PUBLIC_KEY to your environment.'
+      );
+      return;
+    }
+
+    setStatus('sending');
+    setErrorMessage(null);
+
+    try {
+      await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey);
+      setStatus('success');
+      formRef.current.reset();
+    } catch (error) {
+      console.error('EmailJS send error:', error);
+      setStatus('error');
+      setErrorMessage('Something went wrong while sending your message. Please try again or email me directly.');
+    }
   };
 
   return (
@@ -63,28 +94,33 @@ export default function Contact() {
             </div>
           </div>
 
-          <form className="contact__form" onSubmit={handleSubmit}>
-            {submitted ? (
+          <form ref={formRef} className="contact__form" onSubmit={handleSubmit}>
+            {status === 'success' ? (
               <div className="contact__success">
                 <Send size={28} />
-                <p>Thanks for reaching out! I'll get back to you soon.</p>
+                <p>Thanks for reaching out! I got your message and will respond soon.</p>
               </div>
             ) : (
               <>
                 <div className="contact__field">
                   <label htmlFor="name">Name</label>
-                  <input id="name" type="text" placeholder="Your name" required />
+                  <input id="name" name="from_name" type="text" placeholder="Your name" required />
                 </div>
                 <div className="contact__field">
                   <label htmlFor="email">Email</label>
-                  <input id="email" type="email" placeholder="you@example.com" required />
+                  <input id="email" name="reply_to" type="email" placeholder="you@example.com" required />
                 </div>
                 <div className="contact__field">
                   <label htmlFor="message">Message</label>
-                  <textarea id="message" rows={5} placeholder="What's on your mind?" required />
+                  <textarea id="message" name="message" rows={5} placeholder="What's on your mind?" required />
                 </div>
-                <button type="submit" className="btn btn--primary btn--full">
-                  Send Message
+
+                {status === 'error' && errorMessage ? (
+                  <p className="contact__error">{errorMessage}</p>
+                ) : null}
+
+                <button type="submit" className="btn btn--primary btn--full" disabled={status === 'sending'}>
+                  {status === 'sending' ? 'Sending…' : 'Send Message'}
                 </button>
               </>
             )}
