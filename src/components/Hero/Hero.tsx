@@ -1,9 +1,18 @@
-import { ArrowDown, Github, Linkedin } from 'lucide-react';
+import { ArrowDown, Download, Github, Linkedin } from 'lucide-react';
 import './Hero.css';
 
 export default function Hero() {
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const downloadResume = () => {
+    const link = document.createElement('a');
+    link.href = '/Shreyash_Resume_Latex.pdf';
+    link.download = 'Shreyash_Shirsat_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -23,6 +32,10 @@ export default function Hero() {
         <div className="hero__actions">
           <button className="btn btn--primary" onClick={() => scrollTo('#projects')}>
             View Projects
+          </button>
+          <button className="btn btn--outline" onClick={downloadResume}>
+            <Download size={16} style={{ marginRight: '8px' }} />
+            Download Resume
           </button>
           <button className="btn btn--outline" onClick={() => scrollTo('#contact')}>
             Contact Me
